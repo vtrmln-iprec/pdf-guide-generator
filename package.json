@@ -1,0 +1,17 @@
+{
+  "name": "pdf-guide-generator",
+  "version": "1.0.0",
+  "description": "Un utilitaire CLI pour générer des guides PDF élégants via Typst à partir de fichiers JSON/JS.",
+  "main": "bin/index.js",
+  "bin": {
+    "generate-guide": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Antigravity",
+  "license": "ISC",
+  "dependencies": {
+    "typst": "latest"
+  }
+}
