@@ -100,14 +100,22 @@ let typ = `#set document(title: "${content.metadata.title}", author: "${content.
 
   #align(center)[
     #v(4cm)
-    #grid(
-      columns: (1fr, auto, 3cm, auto, 1fr),
-      [], align(horizon)[#image("${content.metadata.logos?.[0]?.src || 'src/source_content/Tux.svg.png'}", height: 70pt)], [],
-      align(horizon)[#image("${content.metadata.logos?.[1]?.src || 'src/source_content/Gnu-bash-logo.svg.png'}", height: 55pt)], [],
-    )
+    
+    // Top logos (flanking)
+    ${
+      content.metadata.logos && content.metadata.logos.length > 0
+        ? `#grid(
+            columns: (${Array(content.metadata.logos.length).fill('auto').join(', ')}),
+            gutter: 2cm,
+            ${content.metadata.logos.map(l => `align(horizon)[#image("${l.src}", height: 60pt)]`).join(', ')}
+          )`
+        : ''
+    }
 
     #v(1.8cm)
-    #image("${content.metadata.institutionLogo?.src || 'src/source_content/AlmaLinux.svg'}", height: 180pt)
+    
+    // Giant Cover Logo
+    ${content.metadata.coverLogo ? `#image("${content.metadata.coverLogo.src}", height: 180pt)` : ''}
 
     #v(2cm)
     #line(length: 40%, stroke: 2pt + rgb("#0ea5e9"))
@@ -120,7 +128,7 @@ let typ = `#set document(title: "${content.metadata.title}", author: "${content.
     #pad(x: 3cm)[
       #grid(
         columns: (auto, 1fr, auto),
-        align(left + horizon)[#image("src/source_content/IPREC.png", height: 70pt)],
+        ${content.metadata.institutionLogo ? `align(left + horizon)[#image("${content.metadata.institutionLogo.src}", height: 70pt)],` : '[],'}
         [],
         align(right + horizon)[
           #text(16pt, weight: "bold", fill: rgb("#0f172a"))[${content.metadata.author}] \\

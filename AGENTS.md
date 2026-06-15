@@ -16,11 +16,12 @@ module.exports = {
     author: 'Nom de l\'auteur',
     date: 'Date de création',
     institution: 'Nom de l\'école/entreprise',
+    coverLogo: { src: 'src/source_content/AlmaLinux.svg', alt: 'Main Tech Logo' },
     logos: [
       { src: 'src/source_content/Tux.svg.png', alt: 'Tux' },
       { src: 'src/source_content/Gnu-bash-logo.svg.png', alt: 'Bash' }
     ],
-    institutionLogo: { src: 'src/source_content/AlmaLinux.svg', alt: 'Logo Principal' }
+    institutionLogo: { src: 'src/source_content/IPREC.png', alt: 'Institution Logo' }
   },
   sections: [
     {
