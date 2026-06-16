@@ -34,19 +34,22 @@ const content = require(guidePath);
 function sanitize(text) {
   let result = text
     .replaceAll('<b>', '*').replaceAll('</b>', '*')
-    .replaceAll('<strong>', '*').replaceAll('</strong>', '*')
-    .replaceAll('<br>', ' \\\n');
+    .replaceAll('<strong>', '*').replaceAll('</strong>', '*');
 
   result = result.replaceAll('<code>', '`').replaceAll('</code>', '`');
-  result = result.replace(/</g, '\\<').replace(/>/g, '\\>');
 
   const parts = result.split('`');
   for (let i = 0; i < parts.length; i++) {
     if (i % 2 === 0) {
-      parts[i] = parts[i].replace(/\$/g, '\\$');
+      parts[i] = parts[i]
+        .replace(/\\/g, '\\\\')
+        .replace(/</g, '\\<')
+        .replace(/>/g, '\\>')
+        .replace(/\$/g, '\\$')
+        .replace(/@/g, '\\@');
     }
   }
-  return parts.join('`');
+  return parts.join('`').replaceAll('\\<br\\>', ' \\\n');
 }
 
 let typ = `#set document(title: "${content.metadata.title}", author: "${content.metadata.author}")
@@ -115,7 +118,7 @@ let typ = `#set document(title: "${content.metadata.title}", author: "${content.
     #v(1.8cm)
     
     // Giant Cover Logo
-    ${content.metadata.coverLogo ? `#image("${content.metadata.coverLogo.src}", height: 180pt)` : ''}
+    ${content.metadata.coverLogo ? `#image("${content.metadata.coverLogo.src}", width: 70%)` : ''}
 
     #v(2cm)
     #line(length: 40%, stroke: 2pt + rgb("#0ea5e9"))
@@ -163,7 +166,7 @@ content.sections.forEach((sec) => {
       typ += `\`\`\`bash\n${block.content}\n\`\`\`\n\n`;
     } else if (block.type === 'image') {
       const src = block.src;
-      typ += `#figure(\n  image("${src}", width: 90%),\n  caption: [${(block.caption || '').replace(/</g, '\\<').replace(/>/g, '\\>')}]\n)\n\n`;
+      typ += `#figure(\n  image("${src}", width: 90%),\n  caption: [${(block.caption || '').replace(/\\/g, '\\\\').replace(/</g, '\\<').replace(/>/g, '\\>').replace(/@/g, '\\@')}]\n)\n\n`;
     } else if (block.type === 'info') {
       let fillColor, strokeColor;
       switch (block.variant) {
